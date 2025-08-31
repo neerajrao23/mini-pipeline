@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide <%= guideId %> Steps</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <h1>Guide <%= guideId %> Steps</h1>
+    <div class="steps-container">
+        <% steps.forEach(step=> { %>
+            <div class="step-card">
+                <img src="<%= step.image_url %>" alt="<%= step.title %>">
+                <h3>
+                    <%= step.title %>
+                </h3>
+                <p>Second: <%= step.second %>
+                </p>
+            </div>
+            <% }) %>
+    </div>
+</body>
+
+</html>
