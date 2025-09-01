@@ -1,130 +1,284 @@
-# Mini-Pipeline Project
+# 🎬 Mini-Pipeline Project
 
-## Overview
-This project is a **video processing pipeline** built with Node.js and Docker.  
-It consists of two services:
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Node.js](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)](https://expressjs.com/)
 
-1. **API Service** – Handles video processing requests and triggers callbacks.  
-2. **Interface Service** – Receives processed video data and displays results.
+## 📋 Overview
 
-Both services are containerized using **Docker Compose**, making setup and deployment easy.
+A **scalable video processing pipeline** built with Node.js and Docker that automates video analysis and step extraction. The system consists of two microservices working in tandem to process videos and deliver structured results through a clean web interface.
 
----
+### 🏗️ Architecture
 
-## Prerequisites
-- Windows 10/11 with **WSL2** installed and configured  
-- **Docker Desktop** installed with WSL2 integration  
-- Node.js and npm (managed inside Docker containers)  
+```
+┌─────────────────┐    HTTP/REST    ┌──────────────────┐
+│   API Service   │ ──────────────► │ Interface Service│
+│   (Port 8000)   │                 │   (Port 4000)    │
+│                 │                 │                  │
+│ • Video Upload  │                 │ • Result Display │
+│ • Processing    │                 │ • Web Interface  │
+│ • Callbacks     │                 │ • Data Storage   │
+└─────────────────┘                 └──────────────────┘
+```
 
----
+### 🚀 Key Features
 
-## Project Structure
-mini-pipeline/ <br>
-├── api/ # API service <br>
-    ├──Dockerfile <br>
-    ├──.env.example <br>
-    ├──package.json <br>
-    ├──server.js <br>
-├── interface/ <br>
-    ├──public/ <br>
-        ├──style.css <br>
-    ├──views <br>
-        ├──guide.ejs <br>
-    ├──Dockerfile <br>
-    ├──index.js <br>
-    ├──package.json <br>
-├── docker-compose.yml <br>
+- **Containerized Architecture**: Fully containerized with Docker Compose
+- **Dual Input Methods**: Support for file uploads and remote video URLs
+- **Callback System**: Asynchronous processing with webhook notifications
+- **Health Monitoring**: Built-in health checks for both services
+- **Persistent Storage**: Docker volume mapping for data persistence
+- **Cross-Platform**: Optimized for Windows with WSL2 support
 
 ---
 
-## Setup & Run
+## 🛠️ Prerequisites
 
-### 1. Build and Start Services
-From the project root,
-run:
+### Required Software
+- **Windows 10/11** with WSL2 installed and configured
+- **Docker Desktop** with WSL2 backend enabled
+- **Git** for cloning the repository
 
+### Verification Commands
 ```bash
+# Verify Docker installation
+docker --version
+docker compose --version
+
+# Verify WSL2 integration
+wsl --list --verbose
+```
+
+---
+
+## 📁 Project Structure
+
+```
+mini-pipeline/
+├── 📁 api/                    # API microservice
+│   ├── 🐳 Dockerfile         # API container configuration
+│   ├── ⚙️ .env.example       # Environment variables template
+│   ├── 📦 package.json       # API dependencies
+│   └── 🚀 server.js          # API server implementation
+├── 📁 interface/             # Interface microservice  
+│   ├── 📁 public/            # Static assets
+│   │   └── 🎨 style.css      # Stylesheet
+│   ├── 📁 views/             # EJS templates
+│   │   └── 📄 guide.ejs      # Guide display template
+│   ├── 🐳 Dockerfile         # Interface container configuration
+│   ├── 🚀 index.js           # Interface server implementation
+│   └── 📦 package.json       # Interface dependencies
+├── 🐳 docker-compose.yml     # Multi-container orchestration
+└── 📖 README.md              # Project documentation
+```
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone and Navigate
+```bash
+git clone https://github.com/neerajrao23/mini-pipeline
+cd mini-pipeline
+```
+
+### 2. Environment Setup
+```bash
+cp api/.env.example api/.env
+```
+
+### 3. Build and Launch
+```bash
+# Build and start all services
 docker compose up --build
 ```
 
-This will:
-
-- Build Docker images for both services.
-
-- Start containers.
-
-- Expose ports 8000 (API) and 4000 (Interface).
-
-### 2. Check Service Health
-
-Verify that both services are running:
-```bash
-curl http://localhost:8000/health
-curl http://localhost:4000/health
+**Expected Output:**
+```
+✓ Container mini-pipeline-api-1       Created
+✓ Container mini-pipeline-interface-1 Created
+✓ Container mini-pipeline-api-1       Started
+✓ Container mini-pipeline-interface-1 Started
 ```
 
-Expected response:
-
+### 4. Verify Deployment
 ```bash
+# Check API health
+curl http://localhost:8000/health
+
+# Check Interface health  
+curl http://localhost:4000/health
+
+# Expected response from both:
 {"ok": true}{"ok": true}
 ```
-### 3. Trigger the Pipeline <br>
-a) File Upload-
 
-Use PowerShell:
+---
 
-```bash
+## 🎯 Usage Guide
+
+### Method 1: File Upload Processing
+
+**PowerShell (Windows):**
+```powershell
 curl.exe -X POST http://localhost:8000/process-video `
   -H "Authorization: Bearer stepwize_test" `
   -F "video=@C:/temp/demo.mp4;type=video/mp4" `
   -F "guide_id=67" `
   -F "callback_url=http://host.docker.internal:4000/callbacks/steps"
-  ```
-Notes:
+```
 
-- host.docker.internal allows Docker containers to reach the host on Windows.
+**Bash/WSL:**
+```bash
+curl -X POST http://localhost:8000/process-video \
+  -H "Authorization: Bearer stepwize_test" \
+  -F "video=@/path/to/your/video.mp4" \
+  -F "guide_id=67" \
+  -F "callback_url=http://host.docker.internal:4000/callbacks/steps"
+```
 
-- Replace C:/temp/demo.mp4 with your local video path.
-
-b) Remote Video URL
-
-Trigger processing via a remote video URL:
+### Method 2: Remote URL Processing
 
 ```bash
 curl -X POST http://localhost:8000/process-video \
   -H "Authorization: Bearer stepwize_test" \
   -H "Content-Type: application/json" \
-  -d '{"video_url":"https://example.com/video.mp4","guide_id":67,"callback_url":"http://host.docker.internal:4000/callbacks/steps"}'
+  -d '{
+    "video_url": "https://example.com/sample-video.mp4",
+    "guide_id": 67,
+    "callback_url": "http://host.docker.internal:4000/callbacks/steps"
+  }'
 ```
 
-### 4. Verify Output
+### 📊 View Results
 
-- The Interface service saves received data to 
-```bash
-interface/received.json
+Open your browser and navigate to:
 ```
-
-Open the browser at:
-
-```bash
 http://localhost:4000/guides/67
 ```
 
-You should see mocked steps with titles and images.
-
----
-
-## Notes:
-
-- Ensure the video file path is correct when uploading local files.
-
-- Docker volume mapping keeps received.json and node modules persistent between restarts.
-
-- All API requests require the Authorization header: 
-```bash
-Bearer stepwize_test
+The processed data is also saved to:
 ```
+interface/received.json
+```
+
 ---
 
-Made by Neeraj Rao
+## 🔧 API Reference
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/health` | Health check for API service |
+| `POST` | `/process-video` | Submit video for processing |
+
+### Authentication
+
+All API requests require the authorization header:
+```
+Authorization: Bearer stepwize_test
+```
+
+### Request Parameters
+
+#### File Upload
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `video` | File | Yes | Video file to process |
+| `guide_id` | Integer | Yes | Unique guide identifier |
+| `callback_url` | URL | Yes | Callback endpoint for results |
+
+#### URL Processing
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `video_url` | URL | Yes | Remote video URL |
+| `guide_id` | Integer | Yes | Unique guide identifier |
+| `callback_url` | URL | Yes | Callback endpoint for results |
+
+---
+
+## 🐳 Docker Configuration
+
+### Services Overview
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| **API** | 8000 | Video processing and API endpoints |
+| **Interface** | 4000 | Web interface and callback handling |
+
+### Volume Mappings
+- `./interface/received.json` → Persistent result storage
+- `./interface/node_modules` → Cached dependencies
+
+### Network Configuration
+- **Internal Communication**: Docker bridge network
+- **Host Access**: `host.docker.internal` for container-to-host communication
+
+---
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+#### WSL2 Integration Issues
+```bash
+# Ensure WSL2 is set as default
+wsl --set-default-version 2
+
+# Restart Docker Desktop with WSL2 integration enabled
+```
+
+#### File Path Issues (Windows)
+- Use forward slashes: `/c/temp/video.mp4`
+- Or use PowerShell with backslashes: `C:\temp\video.mp4`
+- Ensure file exists and is accessible
+
+### Logs and Debugging
+```bash
+# View service logs
+docker compose logs api
+docker compose logs interface
+```
+
+---
+
+## 🚦 Health Monitoring
+
+Both services include health check endpoints:
+
+```bash
+# API Service Health
+curl http://localhost:8000/health
+
+# Interface Service Health  
+curl http://localhost:4000/health
+
+# Docker health status
+docker compose ps
+```
+
+---
+
+## 📈 Performance Notes
+
+- **Storage**: Processed results stored in `received.json`
+- **Concurrency**: Supports multiple simultaneous requests
+
+---
+
+## 👨‍💻 Author
+
+**Neeraj Rao**
+- 💼 [LinkedIn](https://linkedin.com/in/neerajrao-cse)
+- 🐱 [GitHub](https://github.com/neerajrao23)
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with Node.js and Express
+- Containerized with Docker
+- Styled with modern CSS and EJS templating
+
 ---
