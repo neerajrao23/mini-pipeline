@@ -298,7 +298,7 @@ docker compose ps
 ## 👨‍💻 Author
 
 **Neeraj Rao**
-- 💼 [LinkedIn](https://linkedin.com/in/neerajrao-cse)
+- 💼 [LinkedIn](https://linkedin.com/in/neeraj-rao-cse)
 - 🐱 [GitHub](https://github.com/neerajrao23)
 
 ---
