@@ -267,6 +267,34 @@ docker compose ps
 
 ---
 
+## 📸 Screenshots
+
+### 🎯 Running the Project
+<div align="center">
+  <img src="screenshots/start.png" alt="Application Home Interface" width="800"/>
+  <p><em>Main snapshot showing build</em></p>
+</div>
+
+### ⚡ Video Processing
+<div align="center">
+  <img src="screenshots/video-upload.png" alt="Video Processing Flow" width="800"/>
+  <p><em>Video upload and processing workflow</em></p>
+</div>
+
+### 📋 Results Display
+<div align="center">
+  <img src="screenshots/main.png" alt="Processing Results" width="800"/>
+  <p><em>Processed video steps and extracted information</em></p>
+</div>
+
+### 🔄 received.json
+<div align="center">
+  <img src="screenshots/received.png" alt="received JSON" width="800"/>
+  <p><em>creates received.json and stores json as API send it to INTERFACE</em></p>
+</div>
+
+---
+
 ## 👨‍💻 Author
 
 **Neeraj Rao**
