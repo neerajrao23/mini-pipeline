@@ -1,0 +1,23 @@
+{
+  "guide_id": 67,
+  "steps": [
+    {
+      "index": 1,
+      "second": 5,
+      "title": "Frame 00:05",
+      "image_url": "https://images.unsplash.com/photo-1676380363734-f2f932ff5981?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "index": 2,
+      "second": 10,
+      "title": "Frame 00:10",
+      "image_url": "https://images.unsplash.com/photo-1676380362680-85260af12dca?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "index": 3,
+      "second": 15,
+      "title": "Frame 00:15",
+      "image_url": "https://images.unsplash.com/photo-1676380367878-c79a5f40edb6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
+  ]
+}

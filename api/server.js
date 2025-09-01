@@ -53,19 +53,22 @@ const MOCKED_RESPONSE = {
       index: 1,
       second: 5,
       title: "Frame 00:05",
-      image_url: "http://example.com/img1.jpg",
+      image_url:
+        "https://images.unsplash.com/photo-1676380363734-f2f932ff5981?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       index: 2,
       second: 10,
       title: "Frame 00:10",
-      image_url: "http://example.com/img2.jpg",
+      image_url:
+        "https://images.unsplash.com/photo-1676380362680-85260af12dca?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       index: 3,
       second: 15,
       title: "Frame 00:15",
-      image_url: "http://example.com/img3.jpg",
+      image_url:
+        "https://images.unsplash.com/photo-1676380367878-c79a5f40edb6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ],
 };
@@ -102,7 +105,8 @@ app.post(
     // Invalid: neither file nor URL provided
     else {
       return res.status(422).json({
-        error: "Invalid input: either upload file or provide JSON { video_url }",
+        error:
+          "Invalid input: either upload file or provide JSON { video_url }",
       });
     }
 
@@ -111,7 +115,7 @@ app.post(
 
     // Always send JSON to Interface service by default if callback_url not specified
     const INTERFACE_URL =
-      req.body.callback_url  || "http://interface:4000/callbacks/steps";
+      req.body.callback_url || "http://interface:4000/callbacks/steps";
 
     try {
       await axios.post(INTERFACE_URL, MOCKED_RESPONSE, {

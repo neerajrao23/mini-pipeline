@@ -33,7 +33,7 @@ app.get("/guides/:id", (req, res) => {
       return res.status(404).send("Guide not found");
     }
 
-    // Render EJS template with steps
+    // Render EJS template
     res.render("guide", {
       guideId,
       steps: json.steps,
