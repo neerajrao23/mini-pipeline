@@ -119,31 +119,22 @@ curl http://localhost:4000/health
 
 ### Method 1: File Upload Processing
 
-**PowerShell (Windows):**
-```powershell
-curl.exe -X POST http://localhost:8000/process-video `
-  -H "Authorization: Bearer stepwize_test" `
-  -F "video=@C:/temp/demo.mp4;type=video/mp4" `
-  -F "guide_id=67" `
-  -F "callback_url=http://host.docker.internal:4000/callbacks/steps"
-```
-
 **Bash/WSL:**
 ```bash
 curl -X POST http://localhost:8000/process-video \
-  -H "Authorization: Bearer stepwize_test" \
-  -F "video=@/path/to/your/video.mp4" \
-  -F "guide_id=67" \
-  -F "callback_url=http://host.docker.internal:4000/callbacks/steps"
+     -H "Authorization: Bearer stepwize_test" \
+     -F "video=@C:/temp/demo.mp4;type=video/mp4" \
+     -F "guide_id=67" \
+     -F "callback_url=http://callback:4000/callbacks/steps"
 ```
 
 ### Method 2: Remote URL Processing
 
 ```bash
 curl -X POST http://localhost:8000/process-video \
-  -H "Authorization: Bearer stepwize_test" \
-  -H "Content-Type: application/json" \
-  -d '{
+     -H "Authorization: Bearer stepwize_test" \
+     -H "Content-Type: application/json" \
+     -d '{
     "video_url": "https://example.com/sample-video.mp4",
     "guide_id": 67,
     "callback_url": "http://host.docker.internal:4000/callbacks/steps"
@@ -230,7 +221,7 @@ wsl --set-default-version 2
 ```
 
 #### File Path Issues (Windows)
-- Use forward slashes: `/c/temp/video.mp4`
+- Use forward slashes: `C:/temp/video.mp4`
 - Or use PowerShell with backslashes: `C:\temp\video.mp4`
 - Ensure file exists and is accessible
 

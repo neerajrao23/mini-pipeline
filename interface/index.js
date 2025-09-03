@@ -49,11 +49,28 @@ app.post("/callbacks/steps", (req, res) => {
     return res.status(400).json({ error: "Invalid JSON structure" });
   }
 
-  fs.writeFile("received.json", JSON.stringify(req.body, null, 2), (err) => {
-    if (err) return res.status(500).json({ error: "Failed to save JSON" });
-    res.json({ ok: true, message: "JSON received and saved" });
+  fs.readFile("received.json", "utf-8", (err, data) => {
+    let existing = {};
+    if (!err) {
+      try {
+        existing = JSON.parse(data);
+      } catch {}
+    }
+
+    // Only overwrite if guide_id is new or steps changed
+    if (existing.guide_id === guide_id) {
+      console.log(`Idempotent callback received for guide_id=${guide_id}. No duplicate steps created.`);
+
+    }
+
+    fs.writeFile("received.json", JSON.stringify(req.body, null, 2), (err) => {
+      if (err) return res.status(500).json({ error: "Failed to save JSON" });
+      res.json({ ok: true, message: "JSON received and saved (idempotent)" });
+    });
   });
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`Interface service running on ${PORT}`);

@@ -10,7 +10,8 @@ const PORT = 8000;
 const AUTH_TOKEN = process.env.IMPORT_TOKEN;
 const ALLOWED_MIME = ["video/mp4", "video/quicktime", "video/x-msvideo"];
 
-const upload = multer({ storage: multer.memoryStorage() });
+// const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ dest: "uploads/" });
 app.use(express.json());
 
 //root
@@ -87,6 +88,7 @@ app.post(
     // File upload
     if (req.file) {
       if (!ALLOWED_MIME.includes(req.file.mimetype)) {
+        console.log("File uploaded:");
         return res.status(422).json({ error: "Invalid video file type" });
       }
     }
@@ -97,6 +99,7 @@ app.post(
         return res.status(422).json({ error: "Invalid video URL" });
       }
       if (!/\.(mp4|mov|avi)(\?.*)?$/i.test(video_url)) {
+        console.log("Video URL received:");
         return res
           .status(422)
           .json({ error: "URL must point to a video file" });
@@ -115,7 +118,7 @@ app.post(
 
     // Always send JSON to Interface service by default if callback_url not specified
     const INTERFACE_URL =
-      req.body.callback_url || "http://interface:4000/callbacks/steps";
+      req.body.callback_url;
 
     try {
       await axios.post(INTERFACE_URL, MOCKED_RESPONSE, {
